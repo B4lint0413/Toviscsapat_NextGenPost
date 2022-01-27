@@ -107,7 +107,7 @@ def AbsDRV(toAngle, speed, cm, gyro):
         while ((BMotor.angle() + CMotor.angle())/2 > TargetRot):
             DRV.drive(Speed, toAngle-(gyro.angle()%360))
     DRV.stop()
-def Align(sensor1, sensor2, speed):
+def Align(sensor1, sensor2):
     #Feature idea: calibrate the definition of black(reflected) before running
     # sensor1 is the sensor on the left side; sensor2 is the sensor on the right side
     ev3 = EV3Brick()
@@ -119,15 +119,17 @@ def Align(sensor1, sensor2, speed):
 
     # BMotor.reset_angle(0)
     # CMotor.reset_angle(0)
-    while sensor1.reflection()>=20 or sensor2.reflection()>=20:
-        if sensor1.reflection()>=20:
+    while sensor1.reflection()>=10 or sensor2.reflection()>=10:
+        if sensor1.reflection()>=10:
             BMotor.run(sensor1.reflection()*1)#speed
         else:
             BMotor.hold()
-        if sensor2.reflection()>=20:
+        if sensor2.reflection()>=10:
             CMotor.run(sensor2.reflection()*1)#speed
         else:
             CMotor.hold()
+    BMotor.stop()
+    CMotor.stop()
 
 def LFOL(sensor1, sensor2, speed, cm, k, mode):
     # K is responsible for the amount of correction
